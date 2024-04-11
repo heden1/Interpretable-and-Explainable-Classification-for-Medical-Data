@@ -12,6 +12,12 @@ def preprocess_hf_for_lasso(heart_failures: pd.DataFrame):
     numerical = ["Age", "RestingBP", "Cholesterol", "FastingBS", "MaxHR" , "Oldpeak"]
     preprocessed = heart_failures.copy()
 
+    # Cholesterol is weird and has many zeros
+    median_value = preprocessed['Cholesterol'].median()
+
+    # Replace 0 values with the median
+    preprocessed['column_name'] = preprocessed['Cholesterol'].replace(0, median_value)
+
     numeric_transformer = Pipeline(steps=[
         ('scaler', StandardScaler())
     ])
